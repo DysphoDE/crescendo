@@ -1,0 +1,10 @@
+{
+  "name": "crescendo",
+  "private": true,
+  "type": "module",
+  "description": "Crescendo – ein musikalisches Idle-Spiel",
+  "scripts": {
+    "start": "node tools/serve.mjs 8765",
+    "sim": "node tools/sim.mjs"
+  }
+}

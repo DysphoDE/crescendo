@@ -1,0 +1,60 @@
+// Wettbewerbe: besondere Durchgänge mit Einschränkungen. Wer das Ziel erreicht, erhält einen dauerhaften Bonus.
+export const CHALLENGES = [
+  {
+    id: 'c_silence', name: '4′33″', icon: 'sound-off', need: 2, goal: 1e12,
+    rule: 'Klicks auf die Schallplatte erzeugen keine Noten.',
+    restrict: [{ t: 'noClickNotes', v: 1 }],
+    reward: 'Offline-Produktion +25 %-Punkte, Produktion ohne Klick +25 %',
+    fx: [{ t: 'offline', v: 0.25 }, { t: 'idle', v: 1.25 }],
+    lore: 'Nach John Cage: Die Musik entsteht ganz von allein.',
+  },
+  {
+    id: 'c_minimal', name: 'Minimal Music', icon: 'sound-waves', need: 3, goal: 1e11,
+    rule: 'Von jedem Instrument darfst du höchstens 25 Stück besitzen.',
+    restrict: [{ t: 'maxPerBuilding', v: 25 }],
+    reward: '+3 % Produktion pro Instrumententyp, den du besitzt',
+    fx: [{ t: 'perType', v: 0.03 }],
+    lore: 'Steve Reich und Philip Glass zeigten: Wenig Material, unendlich wiederholt, kann hypnotisch wirken.',
+  },
+  {
+    id: 'c_tabula', name: 'Tabula rasa', icon: 'scroll-unfurled', need: 4, goal: 1e10,
+    rule: 'Verbesserungen können nicht gekauft werden.',
+    restrict: [{ t: 'noUpgrades', v: 1 }],
+    reward: 'Alle Verbesserungen 10 % günstiger, Instrumente 5 % günstiger',
+    fx: [{ t: 'ucost', v: 0.9 }, { t: 'cost', v: 0.95 }],
+    lore: 'Ein leeres Notenblatt. Alles, was zählt, ist das Instrument selbst.',
+  },
+  {
+    id: 'c_presto', name: 'Presto furioso', icon: 'speedometer', need: 5, goal: 1e13,
+    rule: 'Das Tempo ist um 50 % erhöht, das Treffer-Fenster um 40 % kleiner.',
+    restrict: [{ t: 'bpm', v: 1.5 }, { t: 'window', v: 0.6 }],
+    reward: 'Maximaler Groove +50 %, Groove baut sich 25 % schneller auf',
+    fx: [{ t: 'grooveMax', v: 0.5 }, { t: 'grooveGain', v: 1.25 }],
+    lore: 'So schnell wie möglich – und dann noch schneller.',
+  },
+  {
+    id: 'c_unplugged', name: 'Unplugged', icon: 'jack-plug', need: 6, goal: 1e15,
+    rule: 'Keine elektrischen Instrumente: Rockband, Synthesizer, DJ-Pult, Tonstudio, Streaming, Festival, Neuronale Muse und Sphärenharmonie sind gesperrt.',
+    restrict: [{ t: 'ban', v: ['rock', 'synth', 'dj', 'studio', 'stream', 'festival', 'ai', 'spheres'] }],
+    reward: 'Flügel, Orchester, Oper und Big Band ×2',
+    fx: [{ t: 'bmult', b: 'piano', v: 2 }, { t: 'bmult', b: 'orchestra', v: 2 }, { t: 'bmult', b: 'opera', v: 2 }, { t: 'bmult', b: 'jazz', v: 2 }],
+    lore: 'Nur Holz, Darm, Messing und Stimme. Wie in den legendären Akustik-Konzerten der 90er.',
+  },
+  {
+    id: 'c_solo', name: 'Solistenabend', icon: 'microphone', need: 8, goal: 1e14,
+    rule: 'Legenden wirken in diesem Durchgang nicht.',
+    restrict: [{ t: 'noLegends', v: 1 }],
+    reward: '+1 Ensemble-Platz',
+    fx: [{ t: 'slots', v: 1 }],
+    lore: 'Keine Stars, keine Namen. Nur du und dein Instrument.',
+  },
+  {
+    id: 'c_zwoelf', name: 'Zwölftonreihe', icon: 'piano-keys', need: 10, goal: 1e14,
+    rule: 'Jedes Instrument wird teurer, je mehr verschiedene Instrumente du besitzt (+15 % je Typ).',
+    restrict: [{ t: 'typeTax', v: 0.15 }],
+    reward: 'Jedes Instrument, von dem du mindestens 12 besitzt, bringt +2 % Gesamtproduktion',
+    fx: [{ t: 'per12', v: 0.02 }],
+    lore: 'Kein Ton darf wiederkehren, bevor alle anderen erklungen sind – Schönbergs strenge Regel.',
+  },
+];
+export const CHALLENGE_BY_ID = Object.fromEntries(CHALLENGES.map((c) => [c.id, c]));

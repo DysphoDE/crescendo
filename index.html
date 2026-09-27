@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+  <meta name="theme-color" content="#0d0a1c">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="description" content="Crescendo – ein musikalisches Idle-Spiel: vom Lagerfeuer bis zur Sphärenharmonie.">
+  <title>Crescendo – Das musikalische Idle-Abenteuer</title>
+  <link rel="icon" href="assets/icon.svg" type="image/svg+xml">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="stylesheet" href="css/fonts.css">
+  <link rel="stylesheet" href="css/main.css">
+</head>
+<body class="booting">
+  <canvas id="bg" aria-hidden="true"></canvas>
+
+  <div id="app">
+    <header id="topbar">
+      <button id="logo" class="brand" type="button" aria-label="Crescendo">
+        <span class="brand-clef">𝄞</span>
+        <span class="brand-text">Crescendo</span>
+      </button>
+      <div id="ticker" aria-live="off"><div class="ticker-track"><span class="ticker-item"></span></div></div>
+      <div class="top-actions">
+        <button id="btnHelp" class="icon-btn" type="button" title="Spielanleitung" aria-label="Spielanleitung"></button>
+        <button id="btnSound" class="icon-btn" type="button" title="Ton an/aus" aria-label="Ton an/aus"></button>
+        <button id="btnSave" class="icon-btn" type="button" title="Speichern" aria-label="Speichern"></button>
+      </div>
+    </header>
+
+    <main id="layout">
+      <section id="stage" aria-label="Bühne">
+        <div class="counter">
+          <div class="notes-row"><span id="notesVal" class="notes-val">0</span></div>
+          <div class="notes-unit">Noten</div>
+          <div class="nps-row" data-tip="nps"><span id="npsVal">0</span> <span class="muted">pro Sekunde</span></div>
+          <div class="curr-row" id="currRow"></div>
+        </div>
+        <div id="recordWrap" class="record-wrap">
+          <canvas id="viz" aria-hidden="true"></canvas>
+          <div id="beatRing" class="beat-ring"></div>
+          <button id="record" class="record skin-vinyl" type="button" aria-label="Schallplatte – klicken, um Noten zu erzeugen">
+            <span class="record-spin" id="recordSpin">
+              <span class="record-grooves"></span>
+              <span class="record-label"><span class="record-clef">𝄞</span><span class="record-label-text" id="recordLabel">Urzeit</span></span>
+            </span>
+            <span class="record-sheen"></span>
+          </button>
+          <div id="clickHint" class="click-hint">Klick mich!</div>
+        </div>
+        <div class="groove-panel locked" id="groovePanel" data-tip="groove">
+          <div class="groove-head">
+            <span class="groove-title">Groove</span>
+            <span id="grooveMult" class="groove-mult">×1,00</span>
+            <span id="tempoVal" class="tempo" title="Tempo und Taktart"></span>
+            <span id="comboVal" class="combo"></span>
+          </div>
+          <div class="groove-bar"><div id="grooveFill" class="groove-fill"></div><div class="groove-beats" id="grooveBeats"></div></div>
+          <div id="judgeText" class="judge-text"></div>
+        </div>
+        <div id="buffs" class="buffs"></div>
+        <div id="stageInfo" class="stage-info"></div>
+      </section>
+
+      <nav id="tabs" class="tabs" aria-label="Bereiche"></nav>
+      <section id="content" class="panel content"></section>
+
+      <aside id="store" class="panel store" aria-label="Instrumente">
+        <div class="store-head">
+          <h2>Instrumente</h2>
+          <div class="seg" id="buyAmount" role="group" aria-label="Kaufmenge">
+            <button data-amt="1">1</button><button data-amt="10">10</button><button data-amt="100">100</button><button data-amt="max">Max</button>
+          </div>
+        </div>
+        <div class="store-scroll">
+          <div id="upgradesBox" class="upgrades-box"></div>
+          <div id="buildingList" class="building-list"></div>
+        </div>
+      </aside>
+    </main>
+  </div>
+
+  <canvas id="fx" aria-hidden="true"></canvas>
+  <div id="goldLayer"></div>
+  <div id="tooltip" role="tooltip"></div>
+  <div id="toasts" aria-live="polite"></div>
+  <div id="modalRoot"></div>
+  <div id="bootScreen"><div class="boot-inner"><div class="boot-clef">𝄞</div><div class="boot-title">Crescendo</div><div class="boot-sub">Stimme die Instrumente …</div></div></div>
+
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>
