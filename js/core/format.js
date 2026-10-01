@@ -22,7 +22,7 @@ export const numberFormat = { mode: 'words' }; // 'words' | 'short' | 'sci'
 const deInt = new Intl.NumberFormat('de-DE', { maximumFractionDigits: 0 });
 const de1 = new Intl.NumberFormat('de-DE', { maximumFractionDigits: 1, minimumFractionDigits: 0 });
 const de2 = new Intl.NumberFormat('de-DE', { maximumFractionDigits: 2, minimumFractionDigits: 0 });
-const de3f = new Intl.NumberFormat('de-DE', { maximumFractionDigits: 3, minimumFractionDigits: 3 });
+const de1f = new Intl.NumberFormat('de-DE', { maximumFractionDigits: 1, minimumFractionDigits: 1 });
 const de2f = new Intl.NumberFormat('de-DE', { maximumFractionDigits: 2, minimumFractionDigits: 2 });
 
 function sci(n, digits = 2) {
@@ -47,19 +47,19 @@ export function fmt(n, opts = {}) {
     if (n < 100 && opts.dec) s = (opts.dec >= 2 ? de2 : de1).format(Math.floor(n * 100) / 100);
     else s = deInt.format(Math.floor(n));
   } else if (mode === 'sci') {
-    s = sci(n, 3);
+    s = sci(n, 2);
   } else {
     const group = Math.floor(Math.log10(n) / 3); // 2 = Million
     const idx = group - 2;
-    if (idx >= LONG_SING.length) s = sci(n, 3);
+    if (idx >= LONG_SING.length) s = sci(n, 2);
     else {
       const v = n / Math.pow(10, group * 3);
       if (mode === 'short') {
         s = (v >= 100 ? de1.format(Math.floor(v * 10) / 10) : de2.format(Math.floor(v * 100) / 100)) + ' ' + SHORT[idx];
       } else {
-        let vs = v >= 100 ? de1.format(Math.floor(v * 10) / 10) : de3f.format(Math.floor(v * 1000) / 1000);
-        if (opts.trim && vs.includes(',')) vs = vs.replace(/0+$/, '').replace(/,$/, '');
-        s = vs + ' ' + (vs === '1,000' || vs === '1' ? LONG_SING[idx] : LONG_PLUR[idx]);
+        // Höchstens 2 Nachkommastellen ohne angehängte Nullen – "4,003" sähe aus wie viertausendunddrei
+        const vs = v >= 100 ? de1.format(Math.floor(v * 10) / 10) : de2.format(Math.floor(v * 100) / 100);
+        s = vs + ' ' + (vs === '1' ? LONG_SING[idx] : LONG_PLUR[idx]);
       }
     }
   }
@@ -73,8 +73,9 @@ export function fmtParts(n) {
   const idx = group - 2;
   if (idx >= LONG_SING.length) return { num: fmt(n), word: '' };
   const v = n / Math.pow(10, group * 3);
-  const vs = v >= 100 ? de1.format(Math.floor(v * 10) / 10) : de3f.format(Math.floor(v * 1000) / 1000);
-  return { num: vs, word: vs === '1,000' ? LONG_SING[idx] : LONG_PLUR[idx] };
+  // Feste Stellenzahl, damit der große Zähler nicht springt
+  const vs = v >= 100 ? de1f.format(Math.floor(v * 10) / 10) : de2f.format(Math.floor(v * 100) / 100);
+  return { num: vs, word: vs === '1,00' ? LONG_SING[idx] : LONG_PLUR[idx] };
 }
 
 /** Kompakte Form (für Buttons, Kosten) */
